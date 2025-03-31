@@ -36,12 +36,12 @@ class App extends React.Component {
 
 class Remove extends React.Component {
     state = {
-        showApp: true, // Kontroluje, czy komponent App jest renderowany
+        showApp: true, 
     };
 
     toggleApp = () => {
         this.setState((prevState) => ({
-            showApp: !prevState.showApp, // Przełącz widoczność komponentu App
+            showApp: !prevState.showApp, 
         }));
     };
 
