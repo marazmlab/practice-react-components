@@ -8,24 +8,46 @@ class App extends React.Component {
         firstName: '',
         lastName: '',
         searchQuery: '',
-        users: ['Jan Kowalski', 'Michał Nowak'],
+        users: ['Jan Kowalski', 'Michał Nowak', 'Mariusz Kowalski', 'Dominik Zawiałow',],
     }
 
     renderUsersList() {
-        const {users} = this.state;
-        return users.map(name => {
+        const {users, searchQuery } = this.state;
+
+        // wykorzystanie warunku if wydawało mi sie jakoś mało intuicyjne i skomplikowane
+        const filteredUsers = users.filter(user => 
+            user.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+        );
+
+        return filteredUsers.map(name => {
             return (
-                <li onClick={ this.clickHandler }>
+                <li onClick={ this.clickHandler }
+                    style={{  marginBottom: '5px', listStyle: 'none' }}
+                    title="usuń"
+                >
                     { name }
+                    <button
+                        onClick={() => this.removeUser(name)}
+                        style={{
+                            marginLeft: '10px',
+                            backgroundColor: 'red',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '3px',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        x
+                    </button>
                 </li>
             );
         });
     }
 
-    clickHandler = e => {
-        const {innerText: userName} = e.target;
-        this.removeUser(userName);
-    }
+    // clickHandler = e => {
+    //     const {innerText: userName} = e.target;
+    //     this.removeUser(userName);
+    // }
 
     inputChange = e => {
         const {name, value} = e.target;
@@ -35,20 +57,30 @@ class App extends React.Component {
     }
 
     render() {
-        const { firstName, lastName } = this.state;
+        const { firstName, lastName, searchQuery } = this.state;
         return (
             <section onSubmit={ this.submitHandler }>
                 <form>
                     <input name="firstName"
                         value={ firstName }
                         onChange={ this.inputChange }
+                        placeholder="Imię"
                     />
                     <input name="lastName"
                         value={ lastName }
                         onChange={ this.inputChange }
+                        placeholder="Nazwisko"
                     />
-                    <input type="submit"/>
+                    <input type="submit" value="Dodaj użytkownika"/>
                 </form>
+
+                <input
+                    name="searchQuery"
+                    value={ searchQuery }
+                    onChange={ this.inputChange }
+                    placeholder='Szukaj użytkownika'
+                 />
+
                 <ul>{ this.renderUsersList() }</ul>
             </section>
         );
